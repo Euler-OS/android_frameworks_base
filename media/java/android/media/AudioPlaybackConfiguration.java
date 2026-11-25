@@ -291,7 +291,10 @@ public final class AudioPlaybackConfiguration implements Parcelable {
     @SystemApi
     public @PlayerType int getPlayerType() {
         switch (mPlayerType) {
-            case PLAYER_TYPE_AAUDIO:
+            // AAudio is reported as itself (backport of AOSP 8171de4 "AAudio player type.",
+            // Android 12): with it masked as unknown, PlaybackActivityMonitor never matched its
+            // UNDUCKABLE_PLAYER_TYPES and "ducked" AAudio players with a VolumeShaper that AAudio
+            // ignores, instead of sending the duck focus loss to the app.
             case PLAYER_TYPE_HW_SOURCE:
             case PLAYER_TYPE_EXTERNAL_PROXY:
                 return PLAYER_TYPE_UNKNOWN;
